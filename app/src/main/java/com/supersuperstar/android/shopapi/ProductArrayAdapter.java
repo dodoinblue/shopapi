@@ -32,8 +32,8 @@ public class ProductArrayAdapter extends ArrayAdapter<Product> {
                     .inflate(R.layout.product_item_layout, parent, false);
         }
 
-        TextView tvTitle = (TextView) convertView.findViewById(R.id.product_item_title);
-        TextView tvDetail = (TextView) convertView.findViewById(R.id.product_item_detail);
+        TextView tvTitle = (TextView) convertView.findViewById(R.id.product_title);
+        TextView tvDetail = (TextView) convertView.findViewById(R.id.product_detail);
 //        ImageView ivImage = (ImageView) convertView.findViewById(R.id.product_item_image);
 
         tvTitle.setText(product.mProductTitle);
