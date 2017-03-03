@@ -4,14 +4,13 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 
@@ -27,6 +26,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public RelativeLayout mProductItem;
+
         public ViewHolder(RelativeLayout v) {
             super(v);
             mProductItem = v;
@@ -56,9 +56,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         TextView tvDetail = (TextView) holder.mProductItem.findViewById(R.id.product_detail);
         TextView tvPrice = (TextView) holder.mProductItem.findViewById(R.id.price);
         ImageView tvIcon = (ImageView) holder.mProductItem.findViewById(R.id.productIcon);
-        tvTitle.setText(mProductList.get(position).getTitle());
-        tvDetail.setText(mProductList.get(position).getDescription());
-        tvPrice.setText(Double.toString(mProductList.get(position).getPrice() * mRate));
+        Product product = mProductList.get(position);
+        tvTitle.setText(product.getTitle());
+        tvDetail.setText(product.getDescription());
+        String price = new DecimalFormat("#.##").format(product.getPrice() * mRate);
+        tvPrice.setText(price);
         Picasso.with(mContext).load(mProductList.get(position).getImageUrl()).into(tvIcon);
     }
 

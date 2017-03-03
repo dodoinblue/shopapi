@@ -85,7 +85,6 @@ public class HttpDataSource {
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.i("Charles_TAG", response.toString().substring(0, 500));
                         try {
                             JSONObject quotesJsonObj = response.getJSONObject("quotes");
                             HashMap<String, Double> quotesMap = new HashMap<String, Double>();
@@ -104,8 +103,6 @@ public class HttpDataSource {
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                Log.i("Charles_TAG", "Error loading convert rates");
-
                                 error.printStackTrace();
                             }
                         });

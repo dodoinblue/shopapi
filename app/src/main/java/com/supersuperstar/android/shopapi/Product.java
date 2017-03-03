@@ -1,7 +1,12 @@
 package com.supersuperstar.android.shopapi;
 
+import android.text.Html;
+import android.util.Log;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.net.URLDecoder;
 
 /**
  * Created by Charles on 02/03/2017.
@@ -47,14 +52,12 @@ public class Product {
 
         try {
             mId = jsonObject.getLong("id");
-            mTitle = jsonObject.getString("name");
+            mTitle = Html.fromHtml(jsonObject.getString("name")).toString();
             mDescription = jsonObject.getString("description");
-
             // Assuming all inputs are in dollars
             String priceString = jsonObject.getString("minimumPrice").replaceAll("[^\\d.]+", "");
             mPrice = Double.parseDouble(priceString);
             mImageUrl = jsonObject.getString("imageUrl");
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
