@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -11,6 +12,12 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private String[] mDataSet = {};
+
+    protected void updateDataSet(String[] set) {
+        Log.i("Charles_tag", "Updating set: " + set.length);
+        mDataSet = set;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,14 +34,11 @@ public class MainActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        String[] source = new String[30];
-
-        for (int i = 0; i < source.length; i++) {
-            source[i] = "Product " + i;
-        }
-
         // specify an adapter (see also next example)
-        mAdapter = new ProductAdapter(source);
+        mAdapter = new ProductAdapter(mDataSet);
         mRecyclerView.setAdapter(mAdapter);
+
+        ProductDataSource dataSource = new ProductDataSource(this);
+        dataSource.getProductListFromServer();
     }
 }
