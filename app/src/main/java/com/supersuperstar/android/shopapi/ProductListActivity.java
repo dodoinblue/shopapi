@@ -5,10 +5,14 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,11 +27,21 @@ public class ProductListActivity extends AppCompatActivity {
     private HashMap<String, Double> mConvertRates = new HashMap<String, Double>();
     private Spinner mCurrencyPicker;
     private ArrayAdapter<String> mCurrencyAdapter;
+    private TextView mTipMessage;
+    private HttpDataSource mDataSource;
 
-    protected void updateDataSet(ArrayList<Product> products) {
+    protected void updateProductList(ArrayList<Product> products) {
         mProducts.addAll(products);
         mProductAdapter = new ProductAdapter(mProducts);
         mRecyclerView.setAdapter(mProductAdapter);
+        mTipMessage.setVisibility(View.GONE);
+        mRecyclerView.setOnScrollListener(new EndlessRecyclerViewScrollListener((LinearLayoutManager) mLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                mDataSource.getProductList();
+                Log.i("Charles_TAG", "Loading more");
+            }
+        });
     }
 
     protected void updateConvertRate(HashMap<String, Double> rates) {
@@ -41,6 +55,7 @@ public class ProductListActivity extends AppCompatActivity {
         setContentView(R.layout.product_list);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+        mTipMessage = (TextView) findViewById(R.id.tip_message);
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
@@ -56,9 +71,9 @@ public class ProductListActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        HttpDataSource dataSource = new HttpDataSource(this);
-        dataSource.getProductList();
-        dataSource.getCurrencyAndQuotes();
+        mDataSource = new HttpDataSource(this);
+        mDataSource.getProductList();
+        mDataSource.getCurrencyAndQuotes();
     }
 
     private void setupCurrencySelector() {

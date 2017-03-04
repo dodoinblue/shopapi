@@ -1,7 +1,6 @@
 package com.supersuperstar.android.shopapi;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -60,7 +59,7 @@ public class HttpDataSource {
                                     result.add(new Product(jarray.getJSONObject(i)));
                                 }
                             }
-                            ((ProductListActivity) mContext).updateDataSet(result);
+                            ((ProductListActivity) mContext).updateProductList(result);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
