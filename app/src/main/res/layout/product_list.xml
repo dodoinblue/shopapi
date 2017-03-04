@@ -26,7 +26,9 @@
         android:id="@+id/my_recycler_view"
         android:scrollbars="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
+        />
 
     <TextView
         android:id="@+id/tip_message"

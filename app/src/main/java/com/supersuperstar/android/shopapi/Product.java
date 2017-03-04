@@ -1,12 +1,11 @@
 package com.supersuperstar.android.shopapi;
 
 import android.text.Html;
-import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.URLDecoder;
+import java.text.DecimalFormat;
 
 /**
  * Created by Charles on 02/03/2017.
@@ -38,6 +37,10 @@ public class Product {
         return mImageUrl;
     }
 
+    public String getPriceString(double rate) {
+        return new DecimalFormat("#.#").format(mPrice * rate);
+    }
+
     private String mImageUrl;
 
     public Product(long id, String title, String description, float price, String imageUrl) {
@@ -53,7 +56,7 @@ public class Product {
         try {
             mId = jsonObject.getLong("id");
             mTitle = Html.fromHtml(jsonObject.getString("name")).toString();
-            mDescription = jsonObject.getString("description");
+            mDescription = Html.fromHtml(jsonObject.getString("description")).toString();
             // Assuming all inputs are in dollars
             String priceString = jsonObject.getString("minimumPrice").replaceAll("[^\\d.]+", "");
             mPrice = Double.parseDouble(priceString);

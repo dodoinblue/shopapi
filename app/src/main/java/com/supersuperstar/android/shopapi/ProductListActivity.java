@@ -12,8 +12,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -32,21 +30,27 @@ public class ProductListActivity extends AppCompatActivity {
 
     protected void updateProductList(ArrayList<Product> products) {
         mProducts.addAll(products);
-        mProductAdapter = new ProductAdapter(mProducts);
-        mRecyclerView.setAdapter(mProductAdapter);
-        mTipMessage.setVisibility(View.GONE);
-        mRecyclerView.setOnScrollListener(new EndlessRecyclerViewScrollListener((LinearLayoutManager) mLayoutManager) {
-            @Override
-            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                mDataSource.getProductList();
-                Log.i("Charles_TAG", "Loading more");
-            }
-        });
+        mProductAdapter.notifyDataSetChanged();
+
     }
 
     protected void updateConvertRate(HashMap<String, Double> rates) {
         mConvertRates = rates;
         setupCurrencySelector();
+    }
+
+    protected void handleProductListLoadingError () {
+        if (mProducts.size() == 0) {
+            mTipMessage.setText("Network Error. Please touch to retry.");
+        }
+        mTipMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mTipMessage.setText("Loading...");
+                mDataSource.getProductList();
+                mTipMessage.setOnClickListener(null);
+            }
+        });
     }
 
     @Override
@@ -70,10 +74,24 @@ public class ProductListActivity extends AppCompatActivity {
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
+        setupProductAdaptor();
 
         mDataSource = new HttpDataSource(this);
         mDataSource.getProductList();
         mDataSource.getCurrencyAndQuotes();
+    }
+
+    private void setupProductAdaptor() {
+        mProductAdapter = new ProductAdapter(mProducts);
+        mRecyclerView.setAdapter(mProductAdapter);
+        mTipMessage.setVisibility(View.GONE);
+        mRecyclerView.setOnScrollListener(new EndlessRecyclerViewScrollListener((LinearLayoutManager) mLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                Log.i("Charles_TAG", "onLoadMore");
+                mDataSource.getProductList();
+            }
+        });
     }
 
     private void setupCurrencySelector() {

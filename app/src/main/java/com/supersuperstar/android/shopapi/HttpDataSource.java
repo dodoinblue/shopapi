@@ -1,6 +1,7 @@
 package com.supersuperstar.android.shopapi;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -37,10 +38,10 @@ public class HttpDataSource {
         StringBuilder urlBuilder = new StringBuilder("https://api.shop.com/AffiliatePublisherNetwork/v1/products");
         urlBuilder.append("?");
         try {
-            urlBuilder.append(URLEncoder.encode("publisherID","UTF-8") + "=" + URLEncoder.encode("TEST", "UTF-8") + "&");
-            urlBuilder.append(URLEncoder.encode("locale","UTF-8") + "=" + URLEncoder.encode("en_US", "UTF-8") + "&");
-            urlBuilder.append(URLEncoder.encode("perPage","UTF-8") + "=" + URLEncoder.encode("15", "UTF-8") + "&");
-            urlBuilder.append(URLEncoder.encode("apikey","UTF-8") + "=" + URLEncoder.encode("l7xxa82df7dab11d4d2f8dfac696387486bf", "UTF-8"));
+            urlBuilder.append(URLEncoder.encode("publisherID", "UTF-8") + "=" + URLEncoder.encode("TEST", "UTF-8") + "&");
+            urlBuilder.append(URLEncoder.encode("locale", "UTF-8") + "=" + URLEncoder.encode("en_US", "UTF-8") + "&");
+            urlBuilder.append(URLEncoder.encode("perPage", "UTF-8") + "=" + URLEncoder.encode("15", "UTF-8") + "&");
+            urlBuilder.append(URLEncoder.encode("apikey", "UTF-8") + "=" + URLEncoder.encode("l7xxa82df7dab11d4d2f8dfac696387486bf", "UTF-8"));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -68,9 +69,11 @@ public class HttpDataSource {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(mContext, "Network Error", Toast.LENGTH_SHORT).show();
+                        ((ProductListActivity) mContext).handleProductListLoadingError();
                         error.printStackTrace();
-
                     }
+
                 });
 
         // Add the request to the RequestQueue.

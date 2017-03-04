@@ -59,7 +59,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         Product product = mProductList.get(position);
         tvTitle.setText(product.getTitle());
         tvDetail.setText(product.getDescription());
-        String price = new DecimalFormat("#.##").format(product.getPrice() * mRate);
+        String price = product.getPriceString(mRate);
         tvPrice.setText(price);
         Picasso.with(mContext).load(mProductList.get(position).getImageUrl()).into(tvIcon);
     }
