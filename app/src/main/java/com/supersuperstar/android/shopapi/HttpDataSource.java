@@ -128,7 +128,8 @@ public class HttpDataSource {
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                Log.i(LOG_TAG, error.getMessage());
+//                                Log.i(LOG_TAG, error.getMessage());
+                                error.printStackTrace();
                             }
                         });
         mQueue.add(jsObjRequest);
