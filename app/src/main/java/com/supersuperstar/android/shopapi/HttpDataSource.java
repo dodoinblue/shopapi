@@ -42,14 +42,14 @@ public class HttpDataSource {
     private static final String CURRENCY_REQUEST_FORMAT = "format";
     private static final int CURRENCY_REQUEST_FORMAT_JSON = 1;
 
-    public static final String SHOP_RESPONSE_PRODUCT_KEY = "products";
+    private static final String SHOP_RESPONSE_PRODUCT_KEY = "products";
 
     private static final String CURRENCY_RESPONSE_QUOTES = "quotes";
 
     private static final String LOG_TAG = "HttpDataSource";
 
-    Context mContext;
-    RequestQueue mQueue;
+    private Context mContext;
+    private RequestQueue mQueue;
 
     public HttpDataSource(Context ctx) {
         mContext = ctx;
@@ -91,7 +91,7 @@ public class HttpDataSource {
                         Toast.makeText(mContext, mContext.getText(R.string.network_error),
                                 Toast.LENGTH_SHORT).show();
                         ((ProductListActivity) mContext).handleProductListLoadingError();
-                        Log.i(LOG_TAG, error.getMessage());
+//                        Log.i(LOG_TAG, error.getMessage());
                     }
 
                 });
