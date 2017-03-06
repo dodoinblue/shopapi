@@ -1,6 +1,7 @@
 package com.supersuperstar.android.shopapi;
 
 import android.text.Html;
+import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,6 +13,14 @@ import java.text.DecimalFormat;
  */
 
 public class Product {
+
+    private static final String JSON_KEY_PRODUCT_ID = "id";
+    private static final String JSON_KEY_PRODUCT_TITLE = "name";
+    private static final String JSON_KEY_PRODUCT_DESCRIPTION = "description";
+    private static final String JSON_KEY_PRODUCT_MIN_PRICE = "minimumPrice";
+    private static final String JSON_KEY_PRODUCT_IMAGE_URL = "imageUrl";
+    private static final String REGEX_NON_DIGIT_NON_DOT = "[^\\d.]+";
+
     private long mId;
     private String mTitle;
     private String mDescription;
@@ -54,15 +63,17 @@ public class Product {
     public Product(JSONObject jsonObject) {
 
         try {
-            mId = jsonObject.getLong("id");
-            mTitle = Html.fromHtml(jsonObject.getString("name")).toString();
-            mDescription = Html.fromHtml(jsonObject.getString("description")).toString();
+            mId = jsonObject.getLong(JSON_KEY_PRODUCT_ID);
+            mTitle = Html.fromHtml(jsonObject.getString(JSON_KEY_PRODUCT_TITLE)).toString();
+            mDescription = Html.fromHtml(jsonObject.getString(JSON_KEY_PRODUCT_DESCRIPTION))
+                    .toString();
             // Assuming all inputs are in dollars
-            String priceString = jsonObject.getString("minimumPrice").replaceAll("[^\\d.]+", "");
+            String priceString = jsonObject.getString(JSON_KEY_PRODUCT_MIN_PRICE)
+                    .replaceAll(REGEX_NON_DIGIT_NON_DOT, "");
             mPrice = Double.parseDouble(priceString);
-            mImageUrl = jsonObject.getString("imageUrl");
+            mImageUrl = jsonObject.getString(JSON_KEY_PRODUCT_IMAGE_URL);
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.i(this.getClass().getSimpleName(), e.getMessage());
         }
     }
 }

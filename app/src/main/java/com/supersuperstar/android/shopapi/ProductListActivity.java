@@ -41,12 +41,12 @@ public class ProductListActivity extends AppCompatActivity {
 
     protected void handleProductListLoadingError () {
         if (mProducts.size() == 0) {
-            mTipMessage.setText("Network Error. Please touch to retry.");
+            mTipMessage.setText(getText(R.string.network_error_retry));
         }
         mTipMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mTipMessage.setText("Loading...");
+                mTipMessage.setText(getText(R.string.loading));
                 mDataSource.getProductList();
                 mTipMessage.setOnClickListener(null);
             }
@@ -113,7 +113,7 @@ public class ProductListActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 String currencyName = mCurrencyAdapter.getItem(position);
                 double rate;
-                if (currencyName == "USD") {
+                if (currencyName.equals("USD")) {
                     rate = 1d;
                 } else {
                     rate = mConvertRates.get("USD" + currencyName);

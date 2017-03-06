@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">shopapi</string>
+    <string name="network_error">Network Error</string>
+    <string name="loading">Loading...</string>
+    <string name="network_error_retry">Network Error. Please touch to retry.</string>
+
+
+
+    <string name="product_item_image_description">Product image</string>
 </resources>
