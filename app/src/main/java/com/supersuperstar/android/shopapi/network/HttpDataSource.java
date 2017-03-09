@@ -1,4 +1,4 @@
-package com.supersuperstar.android.shopapi;
+package com.supersuperstar.android.shopapi.network;
 
 import android.content.Context;
 import android.util.Log;
@@ -10,6 +10,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.supersuperstar.android.shopapi.views.ProductListActivity;
+import com.supersuperstar.android.shopapi.R;
+import com.supersuperstar.android.shopapi.model.Product;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -1,4 +1,4 @@
-package com.supersuperstar.android.shopapi;
+package com.supersuperstar.android.shopapi.views;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +9,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.supersuperstar.android.shopapi.R;
+import com.supersuperstar.android.shopapi.model.Product;
 
 import java.util.ArrayList;
 
@@ -18,9 +20,11 @@ import java.util.ArrayList;
  */
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
+    public static final double USD_TO_USD_RATE = 1.0d;
+
     private ArrayList<Product> mProductList;
     private Context mContext;
-    private double mRate = 1.0d;
+    private double mRate = USD_TO_USD_RATE;
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

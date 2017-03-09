@@ -1,4 +1,4 @@
-package com.supersuperstar.android.shopapi;
+package com.supersuperstar.android.shopapi.model;
 
 import android.text.Html;
 import android.util.Log;

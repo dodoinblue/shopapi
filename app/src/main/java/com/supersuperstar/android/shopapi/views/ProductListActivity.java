@@ -1,4 +1,4 @@
-package com.supersuperstar.android.shopapi;
+package com.supersuperstar.android.shopapi.views;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +11,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.supersuperstar.android.shopapi.R;
+import com.supersuperstar.android.shopapi.model.Product;
+import com.supersuperstar.android.shopapi.network.HttpDataSource;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,18 +32,18 @@ public class ProductListActivity extends AppCompatActivity {
     private TextView mTipMessage;
     private HttpDataSource mDataSource;
 
-    protected void updateProductList(ArrayList<Product> products) {
+    public void updateProductList(ArrayList<Product> products) {
         mProducts.addAll(products);
         mProductAdapter.notifyDataSetChanged();
 
     }
 
-    protected void updateConvertRate(HashMap<String, Double> rates) {
+    public void updateConvertRate(HashMap<String, Double> rates) {
         mConvertRates = rates;
         setupCurrencySelector();
     }
 
-    protected void handleProductListLoadingError () {
+    public void handleProductListLoadingError () {
         if (mProducts.size() == 0) {
             mTipMessage.setText(getText(R.string.network_error_retry));
         }
