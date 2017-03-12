@@ -20,19 +20,21 @@ import com.supersuperstar.android.shopapi.network.HttpDataSource;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import timber.log.Timber;
 
 
 public class ProductListActivity extends AppCompatActivity {
 
-    private RecyclerView mRecyclerView;
+    @BindView(R.id.my_recycler_view) RecyclerView mRecyclerView;
     private ProductAdapter mProductAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList<ProductModel> mProducts = new ArrayList<ProductModel>();
     private HashMap<String, Double> mConvertRates = new HashMap<String, Double>();
-    private Spinner mCurrencyPicker;
+    @BindView(R.id.currency_selector) Spinner mCurrencyPicker;
     private ArrayAdapter<String> mCurrencyAdapter;
-    private TextView mTipMessage;
+    @BindView(R.id.tip_message) TextView mTipMessage;
     private HttpDataSource mDataSource;
     private ShopApiApplication mApplication;
 
@@ -65,14 +67,11 @@ public class ProductListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.product_list);
-
-        mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
-        mTipMessage = (TextView) findViewById(R.id.tip_message);
+        ButterKnife.bind(this);
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
 
-        mCurrencyPicker = (Spinner) findViewById(R.id.currency_selector);
         setupCurrencySelector();
 
         // use this setting to improve performance if you know that changes
