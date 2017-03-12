@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -13,11 +12,15 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.supersuperstar.android.shopapi.R;
-import com.supersuperstar.android.shopapi.model.Product;
+import com.supersuperstar.android.shopapi.ShopApiApplication;
+
+import com.supersuperstar.android.shopapi.model.ProductModel;
 import com.supersuperstar.android.shopapi.network.HttpDataSource;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import timber.log.Timber;
 
 
 public class ProductListActivity extends AppCompatActivity {
@@ -25,14 +28,15 @@ public class ProductListActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private ProductAdapter mProductAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private ArrayList<Product> mProducts = new ArrayList<Product>();
+    private ArrayList<ProductModel> mProducts = new ArrayList<ProductModel>();
     private HashMap<String, Double> mConvertRates = new HashMap<String, Double>();
     private Spinner mCurrencyPicker;
     private ArrayAdapter<String> mCurrencyAdapter;
     private TextView mTipMessage;
     private HttpDataSource mDataSource;
+    private ShopApiApplication mApplication;
 
-    public void updateProductList(ArrayList<Product> products) {
+    public void updateProductList(ArrayList<ProductModel> products) {
         mProducts.addAll(products);
         mProductAdapter.notifyDataSetChanged();
 
@@ -92,7 +96,7 @@ public class ProductListActivity extends AppCompatActivity {
         mRecyclerView.setOnScrollListener(new EndlessRecyclerViewScrollListener((LinearLayoutManager) mLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                Log.i("Charles_TAG", "onLoadMore");
+                Timber.i("onLoadMore");
                 mDataSource.getProductList();
             }
         });
