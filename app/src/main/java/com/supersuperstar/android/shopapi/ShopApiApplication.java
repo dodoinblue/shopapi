@@ -52,53 +52,16 @@ public class ShopApiApplication extends Application {
                 .addNetworkInterceptor(new StethoInterceptor())
                 .build();
 
-        // Gson
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        Gson gson = gsonBuilder.create();
-
-        // Http Logging
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
         }
 
-        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
-            @Override
-            public void log(String message) {
-                Timber.i(message);
-            }
-        });
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
+       ShopApiApplicationComponent component = DaggerShopApiApplicationComponent.builder()
+               .contextModule(new ContextModule(this))
+               .build();
 
-        File cacheFile = new File(getCacheDir(), "okhttp_cache");
-        Cache cache = new Cache(cacheFile, 10 * 1000 * 1000);
-
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .addInterceptor(loggingInterceptor)
-                .cache(cache)
-                .build();
-
-
-        // Picasso
-        mPicasso = new Picasso.Builder(this)
-                // This just makes image download very slow, why?
-//                .downloader(new OkHttp3Downloader(okHttpClient))
-                .build();
-
-
-        // Retrofit
-        Retrofit shopApiRetrofit = new Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .client(okHttpClient)
-                .baseUrl("https://api.shop.com/AffiliatePublisherNetwork/v1/")
-                .build();
-
-        Retrofit currencyRetrofit = new Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .client(okHttpClient)
-                .baseUrl("http://www.apilayer.net/api/")
-                .build();
-
-        mShopProductService = shopApiRetrofit.create(ShopProductService.class);
-        mCurrencyQuotesService = currencyRetrofit.create(CurrencyQuotesService.class);
+        mShopProductService = component.getShopProductService();
+        mCurrencyQuotesService = component.getCurrencyQuotesService();
+        mPicasso = component.getPicasso();
     }
 }
