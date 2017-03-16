@@ -12,8 +12,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.supersuperstar.android.shopapi.R;
-import com.supersuperstar.android.shopapi.ShopApiApplication;
-
 import com.supersuperstar.android.shopapi.model.ProductModel;
 import com.supersuperstar.android.shopapi.network.HttpDataSource;
 
@@ -27,14 +25,17 @@ import timber.log.Timber;
 
 public class ProductListActivity extends AppCompatActivity {
 
-    @BindView(R.id.my_recycler_view) RecyclerView mRecyclerView;
+    @BindView(R.id.my_recycler_view)
+    RecyclerView mRecyclerView;
     private ProductAdapter mProductAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList<ProductModel> mProducts = new ArrayList<ProductModel>();
     private HashMap<String, Double> mConvertRates = new HashMap<String, Double>();
-    @BindView(R.id.currency_selector) Spinner mCurrencyPicker;
+    @BindView(R.id.currency_selector)
+    Spinner mCurrencyPicker;
     private ArrayAdapter<String> mCurrencyAdapter;
-    @BindView(R.id.tip_message) TextView mTipMessage;
+    @BindView(R.id.tip_message)
+    TextView mTipMessage;
     private HttpDataSource mDataSource;
 
     public void updateProductList(ArrayList<ProductModel> products) {
@@ -49,7 +50,7 @@ public class ProductListActivity extends AppCompatActivity {
         setupCurrencySelector();
     }
 
-    public void handleProductListLoadingError () {
+    public void handleProductListLoadingError() {
         if (mProducts.size() == 0) {
             mTipMessage.setText(getText(R.string.network_error_retry));
         }

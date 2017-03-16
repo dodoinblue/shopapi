@@ -47,12 +47,9 @@ public class ShopApiApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Stetho.initializeWithDefaults(this);
-        new OkHttpClient.Builder()
-                .addNetworkInterceptor(new StethoInterceptor())
-                .build();
 
         if (BuildConfig.DEBUG) {
+            Stetho.initializeWithDefaults(this);
             Timber.plant(new Timber.DebugTree());
         }
 
