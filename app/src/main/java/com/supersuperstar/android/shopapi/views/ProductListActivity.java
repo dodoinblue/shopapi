@@ -36,9 +36,9 @@ public class ProductListActivity extends AppCompatActivity {
     private ArrayAdapter<String> mCurrencyAdapter;
     @BindView(R.id.tip_message) TextView mTipMessage;
     private HttpDataSource mDataSource;
-    private ShopApiApplication mApplication;
 
     public void updateProductList(ArrayList<ProductModel> products) {
+        mTipMessage.setVisibility(View.GONE);
         mProducts.addAll(products);
         mProductAdapter.notifyDataSetChanged();
 
@@ -91,7 +91,6 @@ public class ProductListActivity extends AppCompatActivity {
     private void setupProductAdaptor() {
         mProductAdapter = new ProductAdapter(mProducts);
         mRecyclerView.setAdapter(mProductAdapter);
-        mTipMessage.setVisibility(View.GONE);
         mRecyclerView.setOnScrollListener(new EndlessRecyclerViewScrollListener((LinearLayoutManager) mLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
