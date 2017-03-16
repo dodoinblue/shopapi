@@ -13,12 +13,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class CurrencyQuotesServiceModule {
 
     @Provides
+    @ShopApiApplicationScope
     CurrencyQuotesService currencyQuotesService(@CurrencyRetrofit Retrofit currencyQuotesRetrofit) {
         return currencyQuotesRetrofit.create(CurrencyQuotesService.class);
     }
 
     @Provides
     @CurrencyRetrofit
+    @ShopApiApplicationScope
     public Retrofit currencyQuotesRetrofit (OkHttpClient okHttpClient, Gson gson) {
         return new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))

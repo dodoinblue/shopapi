@@ -13,12 +13,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ShopProductServiceModule {
 
     @Provides
+    @ShopApiApplicationScope
     public ShopProductService shopProductService (@ShopRetrofit Retrofit shopApiRetrofit) {
         return shopApiRetrofit.create(ShopProductService.class);
     }
 
     @Provides
     @ShopRetrofit
+    @ShopApiApplicationScope
     public Retrofit shopApiRetrofit (OkHttpClient okHttpClient, Gson gson) {
         return new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))

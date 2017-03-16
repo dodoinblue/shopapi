@@ -15,6 +15,7 @@ public class ContextModule {
     }
 
     @Provides
+    @ShopApiApplicationScope
     public Context context() {
         return context;
     }

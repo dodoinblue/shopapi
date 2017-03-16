@@ -6,6 +6,7 @@ import com.supersuperstar.android.shopapi.network.ShopProductService;
 
 import dagger.Component;
 
+@ShopApiApplicationScope
 @Component(modules = {
         ShopProductServiceModule.class,
         CurrencyQuotesServiceModule.class,
