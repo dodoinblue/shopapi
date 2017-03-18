@@ -1,6 +1,7 @@
 package com.supersuperstar.android.shopapi;
 
 import android.app.Application;
+import android.widget.Toast;
 
 import com.facebook.stetho.Stetho;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
@@ -28,6 +29,11 @@ import timber.log.Timber;
 public class ShopApiApplication extends Application {
 
 
+    private ShopApiApplicationComponent mComponent;
+    private Picasso mPicasso;
+    private ShopProductService mShopProductService;
+    private CurrencyQuotesService mCurrencyQuotesService;
+
     public Picasso getPicasso() {
         return mPicasso;
     }
@@ -40,9 +46,9 @@ public class ShopApiApplication extends Application {
         return mCurrencyQuotesService;
     }
 
-    private Picasso mPicasso;
-    private ShopProductService mShopProductService;
-    private CurrencyQuotesService mCurrencyQuotesService;
+    public ShopApiApplicationComponent getComponent() {
+        return mComponent;
+    }
 
     @Override
     public void onCreate() {
@@ -53,12 +59,14 @@ public class ShopApiApplication extends Application {
             Timber.plant(new Timber.DebugTree());
         }
 
-       ShopApiApplicationComponent component = DaggerShopApiApplicationComponent.builder()
-               .contextModule(new ContextModule(this))
-               .build();
+        mComponent = DaggerShopApiApplicationComponent.builder()
+                .contextModule(new ContextModule(this))
+                .build();
 
-        mShopProductService = component.getShopProductService();
-        mCurrencyQuotesService = component.getCurrencyQuotesService();
-        mPicasso = component.getPicasso();
+        mShopProductService = mComponent.getShopProductService();
+        mCurrencyQuotesService = mComponent.getCurrencyQuotesService();
+        mPicasso = mComponent.getPicasso();
+
+        Toast.makeText(this, "ABCDEFg", Toast.LENGTH_SHORT).show();
     }
 }

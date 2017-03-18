@@ -12,11 +12,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.supersuperstar.android.shopapi.R;
+import com.supersuperstar.android.shopapi.ShopApiApplication;
 import com.supersuperstar.android.shopapi.model.ProductModel;
 import com.supersuperstar.android.shopapi.network.HttpDataSource;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,22 +30,27 @@ public class ProductListActivity extends AppCompatActivity {
 
     @BindView(R.id.my_recycler_view)
     RecyclerView mRecyclerView;
-    private ProductAdapter mProductAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
-    private ArrayList<ProductModel> mProducts = new ArrayList<ProductModel>();
-    private HashMap<String, Double> mConvertRates = new HashMap<String, Double>();
     @BindView(R.id.currency_selector)
     Spinner mCurrencyPicker;
-    private ArrayAdapter<String> mCurrencyAdapter;
     @BindView(R.id.tip_message)
     TextView mTipMessage;
-    private HttpDataSource mDataSource;
+
+    @Inject
+    ProductAdapter mProductAdapter;
+    @Inject
+    HttpDataSource mDataSource;
+    @Inject
+    ArrayList<ProductModel> mProducts;
+
+    private ProductListAcitivityComponent mComponent;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private HashMap<String, Double> mConvertRates = new HashMap<String, Double>();
+    private ArrayAdapter<String> mCurrencyAdapter;
 
     public void updateProductList(ArrayList<ProductModel> products) {
         mTipMessage.setVisibility(View.GONE);
         mProducts.addAll(products);
         mProductAdapter.notifyDataSetChanged();
-
     }
 
     public void updateConvertRate(HashMap<String, Double> rates) {
@@ -70,11 +78,28 @@ public class ProductListActivity extends AppCompatActivity {
         setContentView(R.layout.product_list);
         ButterKnife.bind(this);
 
+        mComponent = DaggerProductListAcitivityComponent.builder()
+                .productListActivityModule(new ProductListActivityModule(this))
+                .shopApiApplicationComponent(((ShopApiApplication) this.getApplication()).getComponent())
+                .build();
+        mComponent.injectProductListActivity(this);
+
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
 
         setupCurrencySelector();
 
+        setupProductAdaptor();
+
+//        mDataSource = mComponent.getHttpDataSource();
+
+
+        // Fetch data
+        mDataSource.getProductList();
+        mDataSource.getCurrencyAndQuotes();
+    }
+
+    private void setupProductAdaptor() {
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
         mRecyclerView.setHasFixedSize(true);
@@ -82,15 +107,8 @@ public class ProductListActivity extends AppCompatActivity {
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        setupProductAdaptor();
 
-        mDataSource = new HttpDataSource(this);
-        mDataSource.getProductList();
-        mDataSource.getCurrencyAndQuotes();
-    }
-
-    private void setupProductAdaptor() {
-        mProductAdapter = new ProductAdapter(mProducts);
+//        mProductAdapter = mComponent.productAdapter();
         mRecyclerView.setAdapter(mProductAdapter);
         mRecyclerView.setOnScrollListener(new EndlessRecyclerViewScrollListener((LinearLayoutManager) mLayoutManager) {
             @Override
