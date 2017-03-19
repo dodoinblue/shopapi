@@ -1,4 +1,4 @@
-package com.supersuperstar.android.shopapi;
+package com.supersuperstar.android.shopapi.views;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -8,7 +8,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.supersuperstar.android.shopapi.R;
+import com.supersuperstar.android.shopapi.ShopApiApplication;
+import com.supersuperstar.android.shopapi.model.ProductModel;
 
 import java.util.ArrayList;
 
@@ -18,9 +20,12 @@ import java.util.ArrayList;
  */
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
-    private ArrayList<Product> mProductList;
+    public static final double USD_TO_USD_RATE = 1.0d;
+
+    private ArrayList<ProductModel> mProductList;
     private Context mContext;
-    private double mRate = 1.0d;
+    private double mRate = USD_TO_USD_RATE;
+    private ShopApiApplication mApplication;
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -36,13 +41,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         mRate = rate;
     }
 
-    public ProductAdapter(ArrayList<Product> dataSet) {
+    public ProductAdapter(ArrayList<ProductModel> dataSet) {
         mProductList = dataSet;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         mContext = parent.getContext();
+        mApplication = (ShopApiApplication) mContext.getApplicationContext();
         RelativeLayout v = (RelativeLayout) LayoutInflater.from(mContext)
                 .inflate(R.layout.product_item, parent, false);
         return new ViewHolder(v);
@@ -54,12 +60,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         TextView tvDetail = (TextView) holder.mProductItem.findViewById(R.id.product_detail);
         TextView tvPrice = (TextView) holder.mProductItem.findViewById(R.id.price);
         ImageView tvIcon = (ImageView) holder.mProductItem.findViewById(R.id.productIcon);
-        Product product = mProductList.get(position);
-        tvTitle.setText(product.getTitle());
-        tvDetail.setText(product.getDescription());
+        ProductModel product = mProductList.get(position);
+        tvTitle.setText(product.getReadableTitle());
+        tvDetail.setText(product.getReadableDescription());
         String price = product.getPriceString(mRate);
         tvPrice.setText(price);
-        Picasso.with(mContext).load(mProductList.get(position).getImageUrl()).into(tvIcon);
+        mApplication.getPicasso().load(mProductList.get(position).getImageUrl()).into(tvIcon);
     }
 
     @Override
